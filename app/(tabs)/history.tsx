@@ -41,13 +41,13 @@ export default function HistoryScreen() {
     }
   };
 
-  // Generate history for the last 30 days including days with no records
+  // Generate history for the last 7 days including days with no records
   const generateCompleteHistory = () => {
     const history: IntakeRecord[] = [];
     const recordedDates = new Map(intakeHistory.map(record => [record.date, record]));
     
-    // Loop through last 30 days
-    for (let i = 0; i < 30; i++) {
+    // Loop through last 7 days
+    for (let i = 0; i < 7; i++) {
       const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
       const record = recordedDates.get(date);
       

@@ -86,10 +86,18 @@ export const getIntakeRecords = async (): Promise<IntakeRecord[]> => {
     const recordsStr = await AsyncStorage.getItem(STORAGE_KEYS.INTAKE_HISTORY);
     const firstStartDateStr = await AsyncStorage.getItem(STORAGE_KEYS.FIRST_START_DATE);
     
-    // If no first start date is set, set it to today
+    // If no first start date is set, set it to today and clear all data
     if (!firstStartDateStr) {
       const today = format(new Date(), 'yyyy-MM-dd');
+      
+      // Clear all AsyncStorage data
+      const allKeys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(allKeys);
+      
+      // Set up fresh start
       await AsyncStorage.setItem(STORAGE_KEYS.FIRST_START_DATE, today);
+      await saveStreakData(DEFAULT_STREAK_DATA);
+      await saveUserSettings(DEFAULT_SETTINGS);
       return [];
     }
     
