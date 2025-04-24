@@ -15,8 +15,7 @@ export default function StreakCounter({ streakData, takenToday }: StreakCounterP
   // Animation values
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
-  const countAnim = useRef(new Animated.Value(0)).current;
-  const [displayedCount, setDisplayedCount] = React.useState(0);
+  const [displayedCount, setDisplayedCount] = React.useState(currentStreak);
 
   // Animate when streak changes
   useEffect(() => {
@@ -43,28 +42,9 @@ export default function StreakCounter({ streakData, takenToday }: StreakCounterP
       rotateAnim.setValue(0);
     });
 
-    // Count up animation
-    if (currentStreak > displayedCount) {
-      setDisplayedCount(0); // Reset to create the counting effect
-      Animated.timing(countAnim, {
-        toValue: currentStreak,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      setDisplayedCount(currentStreak);
-    }
+    // Update displayed count without animation
+    setDisplayedCount(currentStreak);
   }, [currentStreak]);
-
-  // Listen to countAnim and update displayedCount
-  useEffect(() => {
-    const listener = countAnim.addListener(({ value }) => {
-      setDisplayedCount(Math.floor(value));
-    });
-    return () => {
-      countAnim.removeListener(listener);
-    };
-  }, [countAnim]);
 
   // Calculate rotation for celebration
   const rotation = rotateAnim.interpolate({

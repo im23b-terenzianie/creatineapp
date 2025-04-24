@@ -7,6 +7,7 @@ export const STORAGE_KEYS = {
   STREAK_DATA: 'creatine_streak_data',
   SETTINGS: 'creatine_settings',
   LAST_UPDATED: 'creatine_last_updated',
+  FIRST_START_DATE: 'creatine_first_start_date',
 };
 
 // Interface for intake records
@@ -83,7 +84,19 @@ export const saveIntakeRecord = async (record: IntakeRecord): Promise<void> => {
 export const getIntakeRecords = async (): Promise<IntakeRecord[]> => {
   try {
     const recordsStr = await AsyncStorage.getItem(STORAGE_KEYS.INTAKE_HISTORY);
-    return recordsStr ? JSON.parse(recordsStr) : [];
+    const firstStartDateStr = await AsyncStorage.getItem(STORAGE_KEYS.FIRST_START_DATE);
+    
+    // If no first start date is set, set it to today
+    if (!firstStartDateStr) {
+      const today = format(new Date(), 'yyyy-MM-dd');
+      await AsyncStorage.setItem(STORAGE_KEYS.FIRST_START_DATE, today);
+      return [];
+    }
+    
+    const records: IntakeRecord[] = recordsStr ? JSON.parse(recordsStr) : [];
+    
+    // Filter records to only include those from first start date onwards
+    return records.filter(record => record.date >= firstStartDateStr);
   } catch (error) {
     console.error('Error getting intake records:', error);
     return [];
@@ -244,6 +257,7 @@ export const clearAllData = async (): Promise<void> => {
       STORAGE_KEYS.STREAK_DATA,
       STORAGE_KEYS.SETTINGS,
       STORAGE_KEYS.LAST_UPDATED,
+      STORAGE_KEYS.FIRST_START_DATE,
     ]);
   } catch (error) {
     console.error('Error clearing data:', error);
