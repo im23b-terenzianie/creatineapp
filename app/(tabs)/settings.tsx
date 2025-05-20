@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  SafeAreaView, 
-  ScrollView, 
-  Platform, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Platform,
   TouchableOpacity,
   TextInput,
   Modal,
@@ -13,13 +13,13 @@ import {
 } from 'react-native';
 import { colors, fontFamilies, spacing, borderRadius, statusBarHeight } from '@/constants/theme';
 import SettingsItem from '@/components/SettingsItem';
-import { 
-  Bell, 
-  Clock, 
-  Calendar, 
-  HelpCircle, 
-  Info, 
-  RefreshCw, 
+import {
+  Bell,
+  Clock,
+  Calendar,
+  HelpCircle,
+  Info,
+  RefreshCw,
   Settings as SettingsIcon,
   Award,
   ArrowLeft
@@ -33,7 +33,7 @@ export default function SettingsScreen() {
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [tempTime, setTempTime] = useState('10:00');
   const [confirmResetVisible, setConfirmResetVisible] = useState(false);
-  
+
   // Load user settings
   useEffect(() => {
     const loadSettings = async () => {
@@ -46,10 +46,10 @@ export default function SettingsScreen() {
         setLoading(false);
       }
     };
-    
+
     loadSettings();
   }, []);
-  
+
   // Save settings when notifications toggle changes
   const handleNotificationsToggle = async (value: boolean) => {
     try {
@@ -61,13 +61,13 @@ export default function SettingsScreen() {
       console.error('Error saving notification setting:', error);
     }
   };
-  
+
   // Open time picker
   const handleTimePress = () => {
     setTempTime(settings.reminderTime);
     setTimePickerVisible(true);
   };
-  
+
   // Save time setting
   const handleSaveTime = async () => {
     try {
@@ -80,11 +80,11 @@ export default function SettingsScreen() {
       console.error('Error saving time setting:', error);
     }
   };
-  
+
   // Format time for display
   const formatTimeForDisplay = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
-    
+
     if (Platform.OS === 'ios') {
       // 12-hour format for iOS
       const period = hours >= 12 ? 'PM' : 'AM';
@@ -95,7 +95,7 @@ export default function SettingsScreen() {
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
   };
-  
+
   // Handle resetting all data
   const handleResetData = async () => {
     try {
@@ -115,14 +115,14 @@ export default function SettingsScreen() {
       );
     }
   };
-  
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <SettingsIcon size={24} color={colors.primary[600]} />
         <Text style={styles.title}>Settings</Text>
       </View>
-      
+
       <ScrollView style={styles.scrollView}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Reminders</Text>
@@ -143,39 +143,20 @@ export default function SettingsScreen() {
             />
           </View>
         </View>
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>App</Text>
           <View style={styles.sectionContent}>
             <SettingsItem
-              icon={<Award size={20} color={colors.warning[500]} />}
-              title="Goals & Achievements"
-              description="View your progress and milestones"
-              onPress={() => {}}
-            />
-            <SettingsItem
               icon={<Info size={20} color={colors.gray[600]} />}
               title="About"
               description="App version and information"
-              onPress={() => {}}
-            />
-            <SettingsItem
-              icon={<HelpCircle size={20} color={colors.gray[600]} />}
-              title="Help & Support"
-              description="Get help with using the app"
-              onPress={() => {}}
-            />
-            <SettingsItem
-              icon={<RefreshCw size={20} color={colors.error[500]} />}
-              title="Reset All Data"
-              description="Clear all tracking history and streak data"
-              onPress={() => setConfirmResetVisible(true)}
-              last={true}
+              onPress={() => { }}
             />
           </View>
         </View>
       </ScrollView>
-      
+
       {/* Time Picker Modal */}
       <Modal
         animationType="slide"
@@ -187,18 +168,18 @@ export default function SettingsScreen() {
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Set Reminder Time</Text>
-              <TouchableOpacity 
-                style={styles.closeButton} 
+              <TouchableOpacity
+                style={styles.closeButton}
                 onPress={() => setTimePickerVisible(false)}
               >
                 <ArrowLeft size={24} color={colors.gray[700]} />
               </TouchableOpacity>
             </View>
-            
+
             <Text style={styles.timePickerLabel}>
               Choose when you want to be reminded to take your daily creatine:
             </Text>
-            
+
             <View style={styles.timeInputContainer}>
               <TextInput
                 style={styles.timeInput}
@@ -211,8 +192,8 @@ export default function SettingsScreen() {
                 Enter time in 24-hour format (e.g., 10:00, 18:30)
               </Text>
             </View>
-            
-            <TouchableOpacity 
+
+            <TouchableOpacity
               style={styles.saveButton}
               onPress={handleSaveTime}
             >
@@ -221,7 +202,7 @@ export default function SettingsScreen() {
           </View>
         </View>
       </Modal>
-      
+
       {/* Reset Confirmation Modal */}
       <Modal
         animationType="fade"
@@ -236,16 +217,16 @@ export default function SettingsScreen() {
               This will erase all your tracking history, streak data, and settings.
               This action cannot be undone.
             </Text>
-            
+
             <View style={styles.confirmButtons}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={[styles.confirmButton, styles.cancelButton]}
                 onPress={() => setConfirmResetVisible(false)}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 style={[styles.confirmButton, styles.resetButton]}
                 onPress={handleResetData}
               >

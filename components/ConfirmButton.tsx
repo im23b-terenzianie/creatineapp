@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import { 
-  TouchableOpacity, 
-  Text, 
-  StyleSheet, 
-  Animated, 
-  Easing, 
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Animated,
+  Easing,
   Platform,
   ViewStyle
 } from 'react-native';
@@ -18,17 +18,16 @@ interface ConfirmButtonProps {
   style?: ViewStyle;
 }
 
-export default function ConfirmButton({ 
-  onPress, 
-  disabled = false, 
+export default function ConfirmButton({
+  onPress,
+  disabled = false,
   taken = false,
-  style 
+  style
 }: ConfirmButtonProps) {
-  // Animation references
+
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const glowAnim = useRef(new Animated.Value(0)).current;
 
-  // Animate the glow effect
   useEffect(() => {
     if (!disabled && !taken) {
       Animated.loop(
@@ -53,12 +52,12 @@ export default function ConfirmButton({
   }, [disabled, taken]);
 
   const handlePress = () => {
-    // Play haptic feedback if not on web
+
     if (Platform.OS !== 'web') {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 
-    // Button press animation
+
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 0.95,
@@ -75,7 +74,7 @@ export default function ConfirmButton({
     onPress();
   };
 
-  // Interpolate the shadow opacity for the glow effect
+
   const shadowOpacity = glowAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0.2, 0.5],
@@ -92,7 +91,7 @@ export default function ConfirmButton({
     return styles.button;
   };
 
-  // Determine text style based on state
+
   const getTextStyle = () => {
     if (taken) {
       return styles.textTaken;
