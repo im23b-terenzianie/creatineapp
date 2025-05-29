@@ -25,7 +25,7 @@ Add your images to the root of the repository or an `/assets` folder.
 
 | Home Screen                | Reminder Notification         |
 |----------------------------|------------------------------|
-| ![Screenshot 1](screenshot1.png) | ![Screenshot 2](screenshot2.png) |
+| ![Screenshot 1](assets/screenshot1.png) | ![Screenshot 2](assets/screenshot2.png) |
 
 ## ✨ Features
 
